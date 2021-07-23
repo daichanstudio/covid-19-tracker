@@ -26,7 +26,7 @@ function App() {
   const [tableData, setTableData] = useState([]);
   const [casesType, setCasesType] = useState("cases");
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
-  const [mapZoom, setMapZoom] = useState(3);
+  const [mapZoom, setMapZoom] = useState(2);
   const [mapCountries, setMapCountries] = useState([]);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ function App() {
     <div className="app">
       <div className="app__left">
         <div className="app__header">
-          <h6><img  src={image} alt="COVID-19" /></h6>
+          <h6><img  src={image} alt="COVID-19" width="200" height="50"/></h6>
    
           <FormControl className="app__dropdown">
             <Select
