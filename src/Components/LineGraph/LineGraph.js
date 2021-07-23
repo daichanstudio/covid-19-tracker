@@ -3,18 +3,17 @@ import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 
 const options = {
-legend: {
-      display: false,
-      },
-    elements: {
-      point: {
-        radius: 0,
-      },
-    },
+  plugins:{ legend: { display: false },
+  elements: {
+    point: {
+      radius: 0,
+    }
+  }
+},
   maintainAspectRatio: false,
   tooltips: {
     mode: "index",
-    // intersect: false,
+    intersect: false,
     callbacks: {
       label: function (tooltipItem, data) {
         return numeral(tooltipItem.value).format("+0,0");
@@ -47,48 +46,36 @@ legend: {
   },
 };
 
-const colorByTypes = {
-  cases: {
-    background: "rgba(204,16,52,0.5)",
-    border: "#cc1034",
-  },
-  deaths: {
-    background: "rgba(255, 84, 71,0.5)",
-    border: "#ff6c47",
-  },
-  recovered: {
-    background: "rgba(125, 215, 29,0.5)",
-    border: "#7dd71d",
-  },
+const buildChartData = (data, casesType) => {
+  let chartData = [];
+  let lastDataPoint;
+  for (let date in data.cases) {
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: data[casesType][date] - lastDataPoint,
+      };
+      chartData.push(newDataPoint);
+    }
+    lastDataPoint = data[casesType][date];
+  }
+  return chartData;
 };
 
-function LineGraph({ casesType='cases', ...props }) {
+function LineGraph({ casesType }) {
   const [data, setData] = useState({});
-
-  const buildChartData = (data, casesType) => {
-    const chartData = [];
-    let lastDataPoint;
-
-    for (let date in data.cases) {
-      if (lastDataPoint) {
-        const newDataPoint = {
-          x: date,
-          y: data[casesType][date] - lastDataPoint,
-        };
-        chartData.push(newDataPoint);
-      }
-      lastDataPoint = data[casesType][date];
-    }
-    return chartData;
-  };
 
   useEffect(() => {
     const fetchData = async () => {
-      fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-        .then((response) => response.json())
+      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+        .then((response) => {
+          return response.json();
+        })
         .then((data) => {
-          const chartData = buildChartData(data, casesType);
+          let chartData = buildChartData(data, casesType);
           setData(chartData);
+          console.log(chartData);
+          // buildChart(chartData);
         });
     };
 
@@ -96,20 +83,20 @@ function LineGraph({ casesType='cases', ...props }) {
   }, [casesType]);
 
   return (
-    <div className={props.className}>
+    <div>
       {data?.length > 0 && (
         <Line
-          options={options}
           data={{
             datasets: [
               {
-                backgroundColor: colorByTypes[casesType].background,
-                borderColor: colorByTypes[casesType].border,
+                backgroundColor: "rgba(204, 16, 52, 0.5)",
+                borderColor: "#CC1034",
                 data: data,
               },
             ],
           }}
-        ></Line>
+          options={options}
+        />
       )}
     </div>
   );
