@@ -4,13 +4,14 @@
 You can see the situation about Covid-19 all over the world on "covid-19-tracker" . Please check them out!
 <img width="1390" alt="covid-tracker jpg" src="https://user-images.githubusercontent.com/72646084/128660641-e8c2a1c3-d77d-4ccc-8016-e1735588d8f1.png">
 
+# Deploy on Firebase
+https://covid-19-tracker-2567a.web.app
+
  
 # Features
 I'm using React.js, Chart.js, Material UI.
 
-# Deploy on Firebase
 
-https://covid-19-tracker-2567a.web.app
 
  
 # Requirement
