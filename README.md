@@ -1,4 +1,3 @@
-
 # covid-19-tracker
 
 You can see the situation about Covid-19 all over the world on "covid-19-tracker" . Please check them out!
